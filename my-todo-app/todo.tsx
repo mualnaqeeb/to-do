@@ -21,7 +21,7 @@ export default function TodoList({ user }: Props) {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const res = await axios.get<Todo[]>(`${process.env.API_URL}/todos?user_id=${user.id}`);
+        const res = await axios.get<Todo[]>(`${process.env.API_URL}/todos/`);
         setTodos(res.data);
       } catch (err) {
         console.error(err);

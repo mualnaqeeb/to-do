@@ -1,35 +1,29 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
-import Register from './register';
 import { User } from './App';
 
-interface LoginProps {
+interface RegisterProps {
   setUser: (user: User) => void;
 }
 
-const Login: React.FC<LoginProps> = ({ setUser }) => {
+const Register: React.FC<RegisterProps> = ({ setUser }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [showRegister, setShowRegister] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     try {
-      const response = await axios.post(`${process.env.API_URL}/auth/login}`, { username, password });
+      const response = await axios.post(`${process.env.API_URL}/auth/register`, { username, password });
       setUser(response.data);
     } catch (error) {
-      setErrorMessage("failed to login");
+      setErrorMessage("failed to register");
     }
   };
 
-  if (showRegister) {
-    return <Register setUser={setUser} />;
-  }
-
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Login</Text>
+      <Text style={styles.heading}>Register</Text>
       {errorMessage !== '' && <Text style={styles.error}>{errorMessage}</Text>}
       <TextInput
         style={styles.input}
@@ -46,11 +40,8 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
         onChangeText={(value) => setPassword(value)}
         value={password}
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.registerButton} onPress={() => setShowRegister(true)}>
-        <Text style={styles.registerButtonText}>Don't have an account? Register here</Text>
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
+        <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
     </View>
   );
@@ -92,14 +83,6 @@ const styles = StyleSheet.create({
     color: 'red',
     marginBottom: 20,
   },
-  registerButton: {
-    marginTop: 20,
-  },
-  registerButtonText: {
-    color: '#007aff',
-    textAlign: 'center',
-    fontSize: 16,
-  },
 });
 
-export default Login;
+export default Register;
